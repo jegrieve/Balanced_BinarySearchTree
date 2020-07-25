@@ -18,19 +18,27 @@ class Tree
         node
     end
 
-    def insert(value) #[1,2,3,5]  ---> [4] 
+    def insert(value) 
         node = self.root
         while (node)
         if value > node.value
+            if node.right == nil
+                node.right = Node.new(value)
+                return
+            end
             node = node.right
         elsif node.value == value
             return
         else 
+            if node.left == nil
+                node.left = Node.new(value)
+                return
+            end
             node = node.left
         end
     end
-        node = Node.new(value)
     end
+
 
     def delete(value)
 
@@ -38,5 +46,5 @@ class Tree
 end
 
 a = Tree.new([1,2,3,5])
-a.insert(4)
+a.insert(9)
 p a
