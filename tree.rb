@@ -39,12 +39,93 @@ class Tree
     end
     end
 
+    def delete(root, value)
+        return if root == nil
+        if value < root.value
+            root.left = delete(root.left, value)
+        elsif value > root.value
+            root.right = delete(root.right, value)
+        else
+            if root.left == nil
+                return root.right
+            elsif root.right == nil
+                return root.left
+            end
+            smallest_node = minNodeValue(root.right)
+            root.value = smallest_node.value
+            root.right = delete(root.right, root.value)
+        end
+        return root
+    end
 
-    def delete(value)
+    def minNodeValue(root)
+        while root.left
+            root = root.left
+        end
+        return root
+    end
+
+    def find(root, value)
+        return if root == nil
+        return root if value == root.value
+        if value < root.value
+            find(root.left, value)
+        elsif value > root.value
+            find(root.right, value)  
+        end
+    end
+
+    def level_order(root)
+        visited_node = [root]
+        discovered_queue = [root.value]
+        while !visited_node.empty?
+            node = visited_node.shift
+            if node.left
+            discovered_queue << node.left.value
+            visited_node << node.left
+            end
+            if node.right
+            discovered_queue << node.right.value
+            visited_node << node.right 
+            end
+        end
+        discovered_queue
+    end
+
+    def inorder(root)
+        return [] if root == nil
+        queue = []
+        queue = queue + inorder(root.left)
+        queue << root.value
+        queue = queue + inorder(root.right)
+        queue
+    end
+
+    def preorder(root)
+        return [] if root == nil
+        queue = []
+        queue << root.value
+        queue = queue + preorder(root.left)
+        queue = queue + preorder(root.right)
+        queue
+    end
+    
+    def postorder(root)
+        return [] if root == nil
+        queue = []
+        queue = queue + postorder(root.left)
+        queue = queue + postorder(root.right)
+        queue << root.value
+        queue
+    end 
+
+    def depth(node)
 
     end
+
+
 end
 
-a = Tree.new([1,2,3,5])
-a.insert(9)
-p a
+bst = Tree.new([1,2,3,4,5,6,7,8,9,10])
+p bst.inorder(bst.root)
+
