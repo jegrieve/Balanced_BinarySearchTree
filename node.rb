@@ -5,4 +5,5 @@ class Node
     @left = left
     @right = right
     end
+    
 end
