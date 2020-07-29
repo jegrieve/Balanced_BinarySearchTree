@@ -75,7 +75,7 @@ class Tree
         end
     end
 
-    def level_order(root)
+    def level_order(root = self.root)
         visited_node = [root]
         discovered_queue = [root.value]
         while !visited_node.empty?
@@ -92,7 +92,7 @@ class Tree
         discovered_queue
     end
 
-    def inorder(root)
+    def inorder(root = self.root)
         return [] if root == nil
         queue = []
         queue = queue + inorder(root.left)
@@ -101,7 +101,7 @@ class Tree
         queue
     end
 
-    def preorder(root)
+    def preorder(root = self.root)
         return [] if root == nil
         queue = []
         queue << root.value
@@ -110,7 +110,7 @@ class Tree
         queue
     end
     
-    def postorder(root)
+    def postorder(root = self.root)
         return [] if root == nil
         queue = []
         queue = queue + postorder(root.left)
@@ -120,12 +120,33 @@ class Tree
     end 
 
     def depth(node)
-
+        return 0 if node == nil
+        left_depth = depth(node.left)
+        right_depth = depth(node.right)
+        if left_depth > right_depth
+            return left_depth + 1
+        else
+            return right_depth + 1
+        end
     end
 
+    def balanced?(root = self.root)
+        return true if root == nil
+        left_height = depth(root.left)
+        right_height = depth(root.right)
+        return true if (left_height - right_height).abs <= 1 && balanced?(root.left) && balanced?(root.right)
+        return false
+    end
 
+    def rebalance
+        lo_array = level_order(self.root)
+        self.root = build_tree(lo_array)
+    end
+
+    def pretty_print(node = root, prefix="", is_left = true) #thanks 
+        pretty_print(node.right, "#{prefix}#{is_left ? "│ " : " "}", false) if node.right
+        puts "#{prefix}#{is_left ? "└── " : "┌── "}#{node.value.to_s}"
+        pretty_print(node.left, "#{prefix}#{is_left ? " " : "│ "}", true) if node.left
+      end
 end
-
-bst = Tree.new([1,2,3,4,5,6,7,8,9,10])
-p bst.inorder(bst.root)
 
